@@ -28,6 +28,7 @@
     - webapp/logs
     - webapp/nginx
     - webapp/frontend
+    - webapp/d/Dockerfile
     - webapp/deno/Dockerfile
     - webapp/nodejs/Dockerfile
     - webapp/go/Dockerfile
