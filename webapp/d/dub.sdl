@@ -1,8 +1,5 @@
 name "isuumo"
 description "A minimal D application."
-authors "Hiroki Noda"
-copyright "Copyright © 2021, Hiroki Noda"
-license "BSL-1.0"
 versions "VibeNoSSL"
 dependency "vibe-d" version="~>0.9.3"
 dependency "mysql-native" version="~>3.0.2"
