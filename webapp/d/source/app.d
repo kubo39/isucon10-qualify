@@ -66,54 +66,53 @@ struct Estate
     long popularity;
 }
 
-struct Transaction
+
+auto startTransaction(Connection conn)
 {
-    Connection conn;
-    bool started;
-    bool committed;
-    bool rollbacked;
-
-    alias conn this;
-
-    @disable this(this);
-
-    @disable this();
-
-    this(Connection conn)
+    struct Transaction
     {
-        this.conn = conn;
-        this.started = false;
-        this.committed = false;
-        this.rollbacked = false;
-    }
+        Connection conn;
+        bool committed;
+        bool rollbacked;
 
-    ~this()
-    {
-        if (this.started && !this.committed && !this.rollbacked)
+        @disable this(this);
+        @disable this();
+
+        alias conn this;
+
+        this(Connection conn)
         {
+            this.conn = conn;
+            this.committed = false;
+            this.rollbacked = false;
+        }
+
+        ~this()
+        {
+            if (!this.committed && !this.rollbacked)
+            {
+                this.conn.exec(`ROLLBACK`);
+            }
+        }
+
+        void commit()
+        {
+            assert(!this.rollbacked);
+            this.conn.exec(`COMMIT`);
+            this.committed = true;
+        }
+
+        void rollback()
+        {
+            assert(!this.committed);
             this.conn.exec(`ROLLBACK`);
+            this.rollbacked = true;
         }
     }
 
-    void start()
-    {
-        assert(!this.started && !this.committed && !this.rollbacked);
-        this.conn.exec(`START TRANSACTION`);
-    }
-
-    void commit()
-    {
-        assert(this.started);
-        this.conn.exec(`COMMIT`);
-        this.committed = true;
-    }
-
-    void rollback()
-    {
-        assert(this.started);
-        this.conn.exec(`ROLLBACK`);
-        this.rollbacked = true;
-    }
+    auto tx = Transaction(conn);
+    tx.exec(`START TRANSCTION`);
+    return tx;
 }
 
 class IsuumoAPI
@@ -384,11 +383,9 @@ class IsuumoAPI
         }
 
         auto conn = pool.lockConnection;
-        auto tx = Transaction(conn);
+        auto tx = startTransaction(conn);
         try
         {
-            tx.start;
-
             auto path = request.files["chairs"].tempPath.toString;
             foreach (row; csvReader!Chair(path.readText))
             {
@@ -435,10 +432,9 @@ class IsuumoAPI
         }
 
         auto conn = pool.lockConnection;
-        auto tx = Transaction(conn);
+        auto tx = startTransaction(conn);
         try
         {
-            tx.start;
             auto chair = tx.queryRow(`SELECT * FROM chair WHERE id = ? AND stock > 0 FOR UPDATE`, id);
             if (chair.isNull)
             {
@@ -706,10 +702,9 @@ class IsuumoAPI
         }
 
         Connection conn = pool.lockConnection;
-        auto tx = Transaction(conn);
+        auto tx = startTransaction(conn);
         try
         {
-            tx.start;
             auto path = request.files["estates"].tempPath.toString;
             foreach (row; csvReader(path.readText))
             {
