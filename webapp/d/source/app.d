@@ -814,8 +814,9 @@ void main()
     router.registerWebInterface(new IsuumoAPI);
 
     auto settings = new HTTPServerSettings;
-    settings. port = environment.get("SERVER_PORT", "1323").to!short;
+    settings.port = environment.get("SERVER_PORT", "1323").to!short;
     settings.bindAddresses = ["127.0.0.1"];
     settings.sessionStore = new MemorySessionStore;
     listenHTTP(settings, router);
+    runApplication();
 }
