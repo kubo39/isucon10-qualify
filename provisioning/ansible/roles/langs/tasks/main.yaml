@@ -3,7 +3,7 @@
   become: yes
   become_user: isucon
   shell: |
-    curl -fsS https://dlang.org/install.sh | bash -s ldc-1.27.1
+    curl -fsS https://dlang.org/install.sh | bash -s dmd-2.097.2
 - name: Add PATH for D
   become: yes
   become_user: isucon
@@ -11,7 +11,7 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK D"
     path: /home/isucon/.bashrc
     content: |
-      source /home/isucon/dlang/ldc-1.27.1/activate
+      source /home/isucon/dlang/dmd-2.097.2/activate
 
 - name: Install Rust
   become: yes

@@ -1,8 +1,21 @@
-FROM dlang2/ldc2-ubuntu:1.26.0
+FROM dlangchina/dlang-dmd
 
 EXPOSE 1323
 
 WORKDIR /usr/src/isuumo
+
+RUN apt-get update \
+    && apt-get install -y \
+      wget \
+      default-mysql-client \
+      build-essential \
+      ca-certificates \
+      pkg-config \
+      zlib1g-dev \
+      libssl-dev \
+      libevent-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV DOCKERIZE_VERSION v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && \
@@ -10,13 +23,6 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 COPY dub.sdl dub.selections.json ./
-RUN mdkir source
+RUN mkdir source
 COPY source ./source
 RUN touch source/app.d && dub build -b release
-
-RUN apt-get update && \
-    apt-get install -y wget default-mysql-client && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-CMD ["/usr/src/isuumo/isuumo"]
