@@ -809,7 +809,7 @@ void main()
 
     auto settings = new HTTPServerSettings;
     settings.port = environment.get("SERVER_PORT", "1323").to!short;
-    settings.bindAddresses = ["127.0.0.1"];
+    settings.bindAddresses = ["0.0.0.0"];
     settings.sessionStore = new MemorySessionStore;
     listenHTTP(settings, router);
     runApplication();
