@@ -127,9 +127,10 @@ class IsuumoAPI
             "1_DummyEstateData.sql",
             "2_DummyChairData.sql"
         ];
+        const pwd = getcwd();
         foreach (p; paths)
         {
-            const sqlFile = buildPath(sqlDir, p);
+            const sqlFile = buildPath(pwd, sqlDir, p).buildNormalizedPath;
             const cmd = ["mysql",
                          "-h", dbInfo["host"],
                          "-u", dbInfo["username"],
