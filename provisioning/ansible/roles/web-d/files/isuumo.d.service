@@ -1,0 +1,17 @@
+[Unit]
+Description=isuumo.d
+
+[Service]
+WorkingDirectory=/home/isucom/isuumo/webapp/d
+EnvironmentFile=/home/isucom/env.sh
+PIDFile=/home/isucon/isuumo/webapp/d/server.pid
+
+User=isucon
+Group=isucon
+ExecStart=/home/isucon/isuumo/webapp/d/isuumo
+ExecStop=/bin/kill -s QUID $MAINPID
+
+Restart   = always
+Type      = simple
+[Install]
+WantedBy=multi-user.target

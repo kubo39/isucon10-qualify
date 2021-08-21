@@ -13,5 +13,6 @@
     - role: web-php
     - role: web-perl
     - role: web-python
+    - role: web-d
     - role: web-prepare
     - role: bench

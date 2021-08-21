@@ -16,6 +16,7 @@
 ├── python      # Python の参考実装
 ├── ruby        # Ruby の参考実装
 └── rust        # Rust の参考実装
+└── d           # D の参考実装
 ```
 
 ## 起動方法
