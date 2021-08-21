@@ -131,17 +131,15 @@ class IsuumoAPI
         foreach (p; paths)
         {
             const sqlFile = buildPath(pwd, sqlDir, p).buildNormalizedPath;
-            const cmd = ["mysql",
-                         "-h", dbInfo["host"],
-                         "-u", dbInfo["username"],
-                         "-p" ~ dbInfo["password"],
-                         "-P", dbInfo["port"].to!string,
-                         dbInfo["database"]];
-            auto pipes = pipeProcess(cmd, Redirect.stdin);
-            scope(exit) wait(pipes.pid);
-            pipes.stdin.writeln(readText(sqlFile));
-            pipes.stdin.flush;
-            pipes.stdin.close;
+            const cmd = "mysql -h %s -u %s -p %s -P %d %s < %s".format(
+                dbInfo["host"],
+                dbInfo["username"],
+                dbInfo["password"],
+                dbInfo["port"],
+                dbInfo["database"],
+                sqlFile);
+            auto my = executeShell(cmd, null, Config.none, size_t.max, null, "/bin/bash");
+            enforceHTTP(my.status == 0, HTTPStatus.internalServerError);
         }
         return Json(["language": Json("d")]);
     }
