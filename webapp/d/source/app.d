@@ -30,7 +30,7 @@ static this()
                          dbInfo["password"],
                          dbInfo["database"],
                          dbInfo["port"].to!ushort,
-                         uint.max /* max conn, change later */);
+                         100 /* max conn, change later */);
 }
 
 struct Chair
@@ -149,6 +149,7 @@ class IsuumoAPI
     {
         const sql = `SELECT * FROM chair WHERE stock > 0 ORDER BY price ASC, id ASC LIMIT %d`.format(LIMIT);
         auto conn = pool.lockConnection;
+        scope(exit) conn.close;
         auto rows = conn.query(sql).array;
         auto arr = Json.emptyArray;
         foreach (row; rows)
@@ -462,6 +463,7 @@ class IsuumoAPI
     {
         string sql = `SELECT * FROM estate ORDER BY rent ASC, id ASC LIMIT %d`.format(LIMIT);
         auto conn = pool.lockConnection;
+        scope(exit) conn.close;
         auto rows = conn.query(sql).array;
         Json estates = Json.emptyArray;
         foreach (row; rows)
