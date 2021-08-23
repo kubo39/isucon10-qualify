@@ -326,11 +326,10 @@ class IsuumoAPI
         string limitOffset = ` ORDER BY popularity DESC, id ASC LIMIT %d OFFSET %d`.format(perPage, perPage * page);
         string countPrefix = `SELECT COUNT(*) as count FROM chair WHERE `;
 
-        auto conn1 = pool.lockConnection;
-        auto value = conn1.queryValue("%s%s".format(countPrefix, searchCondition));
+        auto conn = pool.lockConnection;
+        auto value = conn.queryValue("%s%s".format(countPrefix, searchCondition));
         auto count = value.get.get!long;
-        auto conn2 = pool.lockConnection;
-        auto rows = conn2.query("%s%s%s".format(sqlPrefix, searchCondition, limitOffset)).array;
+        auto rows = conn.query("%s%s%s".format(sqlPrefix, searchCondition, limitOffset)).array;
         Json chairs = Json.emptyArray;
         foreach (row; rows)
         {
