@@ -25,4 +25,4 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 COPY dub.sdl dub.selections.json ./
 RUN mkdir source
 COPY source ./source
-RUN touch source/app.d && dub build -b release
+RUN dub build -b release

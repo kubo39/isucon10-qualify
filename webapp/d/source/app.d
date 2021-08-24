@@ -131,7 +131,7 @@ class IsuumoAPI
         foreach (p; paths)
         {
             const sqlFile = buildPath(pwd, sqlDir, p).buildNormalizedPath;
-            const cmd = "mysql -h %s -u %s -p %s -P %d %s < %s".format(
+            const cmd = "mysql -h %s -u %s -p%s -P %d %s < %s".format(
                 dbInfo["host"],
                 dbInfo["username"],
                 dbInfo["password"],
