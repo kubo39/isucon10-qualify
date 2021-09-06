@@ -5,9 +5,9 @@ import mysql;
 enum : long { LIMIT = 20 }
 enum : size_t { NAZOTTE_LIMIT = 50 }
 
-__gshared string[string] dbInfo;
-__gshared Json CHAIR_SEARCH_CONDITION;
-__gshared Json ESTATE_SEARCH_CONDITION;
+shared string[string] dbInfo;
+immutable Json CHAIR_SEARCH_CONDITION;
+immutable Json ESTATE_SEARCH_CONDITION;
 
 MySQLPool pool;
 
