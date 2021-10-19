@@ -402,6 +402,7 @@ class IsuumoAPI
         }
 
         status(201);
+        response.writeVoidBody();
     }
 
     @path("/api/chair/buy/:id")
@@ -450,6 +451,7 @@ class IsuumoAPI
         }
 
         status(200);
+        response.writeVoidBody();
     }
 
     @path("/api/chair/search/condition")
@@ -720,6 +722,7 @@ class IsuumoAPI
             throw e;
         }
         status(201);
+        response.writeVoidBody();
     }
 
     @path("/api/estate/req_doc/:id")
@@ -756,6 +759,7 @@ class IsuumoAPI
         }
 
         status(200);
+        response.writeVoidBody();
     }
 
     @path("/api/estate/search/condition")
