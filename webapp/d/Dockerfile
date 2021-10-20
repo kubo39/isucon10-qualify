@@ -13,7 +13,6 @@ RUN apt-get update \
       pkg-config \
       zlib1g-dev \
       libssl-dev \
-      libevent-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

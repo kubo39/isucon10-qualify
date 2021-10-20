@@ -1,5 +1,5 @@
 name "isuumo"
 description "A minimal D application."
 versions "VibeNoSSL"
-dependency "vibe-d" version="~>0.9.3"
+dependency "vibe-d" version="~>0.9.4"
 dependency "mysql-native" version="~>3.0.3"
